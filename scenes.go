@@ -7,7 +7,8 @@ import (
 
 type scene struct {
 	Id      int      `json:"id"`
-	Text    string   `json:"text"`
+	Header  string   `json:"header"`
+	Story   []string `json:"story"`
 	Choices []choice `json:"choices"`
 }
 type item struct {

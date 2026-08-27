@@ -1,16 +1,21 @@
 [
   {
     "id": 0,
-    "text": "Hello!! Press Enter to continue",
+    "header": "hello!! welcome in the game!",
+    "story": [
+      "are you sure you want to proceed?",
+      "it might turn out to be a questionable choice tbh"
+    ],
     "choices": []
   },
   {
     "id": 1,
-    "text": "Hello!! What do you want to test?",
+    "header": "welcome to scenario no. 1",
+    "story": ["here we test basic choice mechanism"],
     "choices": [
       {
         "id": 1,
-        "text": "Choice 1 - obtain",
+        "text": "choice 1 - obtain",
         "transitions": 0,
         "consumes": [],
         "obtains": [
@@ -22,7 +27,7 @@
       },
       {
         "id": 2,
-        "text": "Choice 2 - consume",
+        "text": "choice 2 - consume",
         "transitions": 0,
         "consumes": [
           {
@@ -34,11 +39,17 @@
       },
       {
         "id": 3,
-        "text": "Choice 3 - move forward",
+        "text": "choice 3 - move forward",
         "transitions": 2,
         "consumes": [],
         "obtains": []
       }
     ]
+  },
+  {
+    "id": 2,
+    "header": "congrats!! you reached the end",
+    "story": [],
+    "choices": []
   }
 ]
