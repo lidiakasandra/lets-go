@@ -17,12 +17,7 @@ type model struct {
 	styles      styles
 }
 
-func initialModel(config UIconfiguration) model {
-	scenes, err := loadScenes()
-	styles := generateStyles(config)
-	if err != nil {
-		panic(err)
-	}
+func initialModel(config UIconfiguration, scenes []scene, styles styles) model {
 	return model{
 		cursor:      0,
 		scenes:      scenes,
