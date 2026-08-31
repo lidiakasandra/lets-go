@@ -8,35 +8,32 @@ import (
 )
 
 type model struct {
-	scenes      []scene
-	activeScene int
-	cursor      int
-	width       int
-	height      int
-	config      UIconfiguration
-	styles      styles
+	game   *Game
+	cursor int
+	width  int
+	height int
+	config UIconfiguration
+	styles styles
 }
 
-func initialModel(config UIconfiguration, scenes []scene, styles styles) model {
+func initialModel(config UIconfiguration, styles styles, game *Game) model {
 	return model{
-		cursor:      0,
-		scenes:      scenes,
-		activeScene: 0,
-		config:      config,
-		styles:      styles,
+		cursor: 0,
+		game:   game,
+		config: config,
+		styles: styles,
 	}
 }
 func (m model) Init() tea.Cmd {
 	return nil
 }
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	currentScene := m.game.scenes[m.game.activeScene]
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.width = msg.Width
 		m.height = msg.Height
-	// Is it a key press?
 	case tea.KeyPressMsg:
-		// Cool, what was the actual key pressed?
 		switch msg.String() {
 		case "ctrl+c", "q":
 			return m, tea.Quit
@@ -45,40 +42,40 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cursor--
 			}
 		case "down", "j":
-			if m.cursor < len(m.scenes[m.activeScene].Choices)-1 {
+			if m.cursor < countSceneChoices(currentScene)-1 {
 				m.cursor++
 			}
 		case "enter":
-			if m.activeScene < len(m.scenes)-1 {
-				m.activeScene = m.activeScene + 1
-				return m, nil
+			if sceneHasChoices(currentScene) {
+				transitionScene(m.game, currentScene.Choices[m.cursor].Transitions)
+			} else {
+				// if there are no choices, just go to next
+				transitionScene(m.game, m.game.activeScene+1)
 			}
 		}
 	}
 	return m, nil
 }
 func (m model) View() tea.View {
-	content := strings.Join(m.scenes[m.activeScene].Story, "\n") + "\n"
+	currentScene := m.game.scenes[m.game.activeScene]
+	content := strings.Join(currentScene.Story, "\n") + "\n"
 	// Print choices if they exist
-	if len(m.scenes[m.activeScene].Choices) != 0 {
-		for i, choice := range m.scenes[m.activeScene].Choices {
+	if sceneHasChoices(currentScene) {
+		for i, choice := range currentScene.Choices {
 			// Is the cursor pointing at this choice?
 			cursor := " " // no cursor
 			if m.cursor == i {
 				cursor = ">" // cursor!
-				content += m.styles.selected.Render(cursor+choice.Text) + "\n"
+				content += m.styles.selected.Render(cursor+" "+choice.Text) + "\n"
 			} else {
-				content += m.styles.unselected.Render(cursor+choice.Text) + "\n"
+				content += m.styles.unselected.Render(cursor+" "+choice.Text) + "\n"
 			}
 		}
 	}
-
-	header := m.styles.header.Render(m.scenes[m.activeScene].Header)
+	header := m.styles.header.Render(currentScene.Header)
 	footer := m.styles.footer.Render(m.config.FooterText)
-
 	contentHeight := m.height - 2 - gloss.Height(header) - gloss.Height(footer)
 	body := m.styles.body.Height(contentHeight).Render(content)
-
 	ui := gloss.JoinVertical(
 		gloss.Left,
 		header, body, footer,
