@@ -6,17 +6,25 @@ import (
 )
 
 type scene struct {
-	Id      int      `json:"id"`
-	Header  string   `json:"header"`
-	Story   []string `json:"story"`
-	Choices []choice `json:"choices"`
+	Id         int      `json:"id"`
+	Header     string   `json:"header"`
+	Story      []string `json:"story"`
+	Choices    []choice `json:"choices"`
+	Transition int      `json:"transition"`
 }
 type choice struct {
-	Id          int    `json:"id"`
-	Text        string `json:"text"`
-	Transitions int    `json:"transitions"`
-	Consumes    []item `json:"consumes"`
-	Obtains     []item `json:"obtains"`
+	Id          int     `json:"id"`
+	Text        string  `json:"text"`
+	Transitions int     `json:"transitions"`
+	Consumes    []item  `json:"consumes"`
+	Obtains     []item  `json:"obtains"`
+	Achievement string  `json:"achievement"`
+	Skills      []skill `json:"skills"`
+	Crumb       string  `json:"crumb"`
+}
+type skill struct {
+	Id    string `json:"id"`
+	Value int    `json:"value"`
 }
 type item struct {
 	Id     int `json:"id"`
@@ -37,10 +45,12 @@ func loadScenes() ([]scene, error) {
 }
 
 // If the scene that you want to transition to exists, perform transition
-func transitionScene(game *Game, i int) {
-	if i > 0 { // 0 is Id of home screen and nothing will be able to navigate to it
-		if validScene(game.scenes, i) {
-			game.activeScene = i
+func transitionScene(game *Game, i choice, c *int) {
+	if i.Transitions > 0 { // 0 is Id of home screen and nothing will be able to navigate to it
+		if validScene(game.scenes, i.Transitions) {
+			game.activeScene = i.Transitions
+			*c = 0
+			game.sceneCrumb = i.Crumb
 		} else {
 			// if Id is invalid, for now do nothing
 		}

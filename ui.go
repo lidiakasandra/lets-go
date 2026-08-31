@@ -47,10 +47,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		case "enter":
 			if sceneHasChoices(currentScene) {
-				transitionScene(m.game, currentScene.Choices[m.cursor].Transitions)
+				transitionScene(m.game, currentScene.Choices[m.cursor], &m.cursor)
 			} else {
-				// if there are no choices, just go to next
-				transitionScene(m.game, m.game.activeScene+1)
+				// will be 0 if undefined on scene level
+				transitionScene(m.game, choice{Transitions: currentScene.Transition}, &m.cursor)
 			}
 		}
 	}
@@ -72,7 +72,12 @@ func (m model) View() tea.View {
 			}
 		}
 	}
-	header := m.styles.header.Render(currentScene.Header)
+	header := ""
+	if len(m.game.sceneCrumb) > 0 {
+		header = m.styles.header.Render(m.game.sceneCrumb + "\n\n" + currentScene.Header)
+	} else {
+		header = m.styles.header.Render(currentScene.Header)
+	}
 	footer := m.styles.footer.Render(m.config.FooterText)
 	contentHeight := m.height - 2 - gloss.Height(header) - gloss.Height(footer)
 	body := m.styles.body.Height(contentHeight).Render(content)

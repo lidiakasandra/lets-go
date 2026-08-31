@@ -4,6 +4,7 @@ type Game struct {
 	scenes      []scene
 	items       []item
 	activeScene int
+	sceneCrumb  string
 }
 
 func initiateGame() (Game, error) {
@@ -15,5 +16,6 @@ func initiateGame() (Game, error) {
 		scenes:      scenes,
 		items:       []item{},
 		activeScene: 0,
+		sceneCrumb:  "",
 	}, nil
 }
