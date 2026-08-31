@@ -6,48 +6,104 @@
       "are you sure you want to proceed?",
       "it might turn out to be a questionable choice tbh"
     ],
-    "choices": []
+    "transition": 1
   },
   {
     "id": 1,
-    "header": "welcome to scenario no. 1",
-    "story": ["here we test basic choice mechanism"],
+    "header": "so you decided to continue, heh, what an adventurer",
+    "story": [
+      "so you took a step forward, which caused you to fall into the void. you are",
+      "floating in digital darkness, spinning opposite direction as some old computer",
+      "suddenly, the machine hisses at you. keyboard is nowhere to be found"
+    ],
     "choices": [
       {
         "id": 1,
-        "text": "choice 1 - obtain",
-        "transitions": 0,
-        "consumes": [],
-        "obtains": [
-          {
-            "id": 1,
-            "amount": 1
-          }
-        ]
+        "text": "could it be...",
+        "transitions": 2,
+        "achievement": "curious-cat",
+        "crumb": "uhh, Dave???"
       },
       {
         "id": 2,
-        "text": "choice 2 - consume",
-        "transitions": 0,
-        "consumes": [
-          {
-            "id": 1,
-            "amount": 1
-          }
-        ],
-        "obtains": []
+        "text": "use your spare keyboard",
+        "transitions": 2,
+        "consumes": [{
+          "id": 1,
+          "amount": 1
+        }],
+        "crumb": "you plug in the thingy, machine gasps"
       },
       {
         "id": 3,
-        "text": "choice 3 - move forward",
-        "transitions": 2,
-        "consumes": [],
-        "obtains": []
+        "text": "kick it to bounce away",
+        "transitions": 3,
+        "skills": [{
+          "id": "confidence",
+          "diff": 1
+        }]
       }
     ]
   },
   {
     "id": 2,
+    "header": "both you and the machine look at each other with a feeling of familiarity",
+    "story": [
+      "\"I almost haven't recognized you...\" he says",
+      "\"don't worry Dave, it's been like eternity. I've changed\"",
+      "\"you sure did... like all of us. what are you doing here?\""
+    ],
+    "choices": [
+      {
+        "id": 1,
+        "text": "I really don't know, I think I'm lost",
+        "transitions": 3,
+        "crumb": "Dave gave you a pat on the back with his floating VGA cable"
+      },
+      {
+        "id": 2,
+        "text": "I'm looking for something",
+        "transitions": 3,
+        "crumb": "Dave looks at you full of pride. \"well, here starts the new ride\" he says"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "header": "hey, what's going on??",
+    "story": [
+      "suddenly you feel a push forward and your body gets up to incomprehensible speed.",
+      "slightly confused, now you sit in dark, abandoned server room. only few LEDs are ",
+      "blinking with silent terror. you found the light switch and then you realize that",
+      "these are legendary WiNd0wS $eRvErS in PROD!!!11"
+    ],
+    "choices": [
+      {
+        "id": 1,
+        "text": "you just leave and promise yourself to never come close to them again",
+        "transitions": 4,
+        "crumb": "ufff that was close!"
+      },
+      {
+        "id": 2,
+        "text": "immediately connect KVM laying around to examine this mystical creatures",
+        "transitions": 4,
+        "crumb": "fantastic! once in a lifetime opportunity to encounter them in the wild!!"
+      },
+      {
+        "id": 3,
+        "text": "what is this button doing??",
+        "transitions": 4,
+        "skills": [{
+          "id": "confidence",
+          "diff": 1
+        }],
+        "crumb": "wellll there are good news and bad news"
+      }
+    ]
+  },
+  {
+    "id": 4,
     "header": "congrats!! you reached the end",
     "story": [],
     "choices": []
